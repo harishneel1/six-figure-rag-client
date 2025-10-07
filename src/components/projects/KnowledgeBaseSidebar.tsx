@@ -406,7 +406,7 @@ export function KnowledgeBaseSidebar({
                     <p className="text-xs text-gray-400 mt-1">
                       {isDragActive
                         ? "Release to upload"
-                        : "PDF, DOCX, CSV • Max 50MB"}
+                        : "PDF, DOCX, CSV • Max 50GB"}
                     </p>
                   </div>
                 </div>
