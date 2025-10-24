@@ -48,8 +48,6 @@ function ProjectsPage() {
 
       const { data } = result || {};
 
-      console.log(data, "projectList");
-
       setProjects(data);
     } catch (err) {
       console.error("Error Loading Projects", err);
