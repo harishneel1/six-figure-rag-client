@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { apiClient } from "@/lib/api";
 import { ProjectDocument } from "@/lib/types";
 import { GenericStep } from "./document-details/GenericStep";
@@ -59,7 +59,7 @@ const PIPELINE_STEPS = [
 
 export function FileDetailsModal({ document, onClose }: FileDetailsModalProps) {
   const [activeTab, setActiveTab] = useState<string>("uploading");
-  const { user } = useUser();
+  const { getToken, userId } = useAuth();
 
   const [selectedChunk, setSelectedChunk] = useState<any>(null);
   const [chunks, setChunks] = useState<any[]>([]);
@@ -83,12 +83,15 @@ export function FileDetailsModal({ document, onClose }: FileDetailsModalProps) {
 
   // Load chunks when document processing is complete
   const loadChunks = async () => {
-    if (!document?.project_id || !document?.id || !user?.id) return;
+    if (!document?.project_id || !document?.id || !userId) return;
+
+    const token = await getToken();
 
     try {
       setChunksLoading(true);
       const result = await apiClient.get(
-        `/api/projects/${document.project_id}/files/${document.id}/chunks?clerk_id=${user.id}`
+        `/api/projects/${document.project_id}/files/${document.id}/chunks`,
+        token
       );
 
       const chunks = result.data.map((chunk: any) => ({
