@@ -8,7 +8,7 @@ import {
   Upload,
   Globe,
   File,
-  FileSpreadsheet,
+  Presentation,
   CheckCircle,
   AlertCircle,
   Loader2,
@@ -93,8 +93,8 @@ const documentUtils = {
     const type = doc.file_type.toLowerCase();
     if (type.includes("pdf"))
       return <FileText size={14} className="text-gray-400" />;
-    if (type.includes("csv") || type.includes("spreadsheet"))
-      return <FileSpreadsheet size={14} className="text-gray-400" />;
+    if (type.includes("ppt") || type.includes("presentation"))
+      return <Presentation size={14} className="text-gray-400" />;
     if (type.includes("word") || type.includes("document"))
       return <File size={14} className="text-gray-400" />;
     return <FileText size={14} className="text-gray-400" />;
@@ -255,7 +255,9 @@ export function KnowledgeBaseSidebar({
       "application/pdf": [".pdf"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         [".docx"],
-      "text/csv": [".csv"],
+      "application/vnd.ms-powerpoint": [".ppt"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        [".pptx"],
     },
     maxSize: 50 * 1024 * 1024,
   });
@@ -406,7 +408,7 @@ export function KnowledgeBaseSidebar({
                     <p className="text-xs text-gray-400 mt-1">
                       {isDragActive
                         ? "Release to upload"
-                        : "PDF, DOCX, CSV • Max 50GB"}
+                        : "PDF, DOCX, PPT • Max 50GB"}
                     </p>
                   </div>
                 </div>
