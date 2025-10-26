@@ -255,9 +255,10 @@ export function KnowledgeBaseSidebar({
       "application/pdf": [".pdf"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         [".docx"],
-      "application/vnd.ms-powerpoint": [".ppt"],
       "application/vnd.openxmlformats-officedocument.presentationml.presentation":
         [".pptx"],
+      "text/plain": [".txt"],
+      "text/markdown": [".md"],
     },
     maxSize: 50 * 1024 * 1024,
   });
@@ -408,7 +409,7 @@ export function KnowledgeBaseSidebar({
                     <p className="text-xs text-gray-400 mt-1">
                       {isDragActive
                         ? "Release to upload"
-                        : "PDF, DOCX, PPT • Max 50GB"}
+                        : "PDF, DOCX, PPT, MD, TXT • Max 50GB"}
                     </p>
                   </div>
                 </div>
@@ -507,7 +508,7 @@ export function KnowledgeBaseSidebar({
                                   e.stopPropagation();
                                   onDocumentDelete(doc.id);
                                 }}
-                                className="p-1 text-gray-500 hover:text-gray-300 hover:bg-[#2a2a2a] rounded transition-colors opacity-0 group-hover:opacity-100"
+                                className="p-1 text-gray-500 hover:text-gray-300 hover:bg-[#2a2a2a] rounded transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
                                 title="Delete source"
                               >
                                 <Trash2 size={12} />
