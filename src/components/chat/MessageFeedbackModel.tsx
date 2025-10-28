@@ -12,8 +12,8 @@ interface FeedbackData {
 interface MessageFeedbackModalProps {
   isOpen: boolean;
   feedbackType?: "like" | "dislike";
-  onSubmit: (feedback: FeedbackData) => void;
-  onCancel: () => void;
+  onSubmit: (feedback: FeedbackData) => Promise<void>;
+  onClose: () => void;
 }
 
 const FEEDBACK_CATEGORIES = {
@@ -35,8 +35,9 @@ export function MessageFeedbackModal({
   isOpen,
   feedbackType,
   onSubmit,
-  onCancel,
+  onClose,
 }: MessageFeedbackModalProps) {
+  // Modal manages its own form state
   const [comment, setComment] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,21 +54,12 @@ export function MessageFeedbackModal({
         comment: comment.trim() || undefined,
         category: selectedCategory || undefined,
       });
-
-      // Reset form
-      setComment("");
-      setSelectedCategory("");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleClose = () => {
-    setComment("");
-    setSelectedCategory("");
-    onCancel();
-  };
-
+  // Don't render if modal is not open
   if (!isOpen || !feedbackType) return null;
 
   const categories = FEEDBACK_CATEGORIES[feedbackType];
@@ -96,9 +88,9 @@ export function MessageFeedbackModal({
             </div>
           </div>
           <button
-            onClick={handleClose}
+            onClick={onClose}
             disabled={isSubmitting}
-            className="text-gray-400 hover:text-gray-300 transition-colors p-2 hover:bg-[#252525] rounded-lg disabled:opacity-50"
+            className="text-gray-400 hover:text-gray-300 transition-colors p-2 hover:bg-[#252525] rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <X size={16} />
           </button>
@@ -162,16 +154,16 @@ export function MessageFeedbackModal({
           <div className="flex gap-3 pt-4">
             <button
               type="button"
-              onClick={handleClose}
+              onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2.5 text-gray-300 bg-[#252525] hover:bg-[#2a2a2a] disabled:bg-[#202020] disabled:text-gray-500 border border-gray-700 rounded-lg transition-colors font-medium"
+              className="flex-1 px-4 py-2.5 text-gray-300 bg-[#252525] hover:bg-[#2a2a2a] disabled:bg-[#202020] disabled:text-gray-500 disabled:cursor-not-allowed border border-gray-700 rounded-lg transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2.5 bg-white hover:bg-gray-100 disabled:bg-gray-600 disabled:text-gray-400 text-black rounded-lg transition-colors font-medium"
+              className="flex-1 px-4 py-2.5 bg-white hover:bg-gray-100 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed text-black rounded-lg transition-colors font-medium"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center gap-2">

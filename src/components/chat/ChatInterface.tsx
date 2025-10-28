@@ -99,7 +99,7 @@ export function ChatInterface({
             />
             <ChatInput
               onSendMessage={handleSendMessage}
-              disabled={isLoading || isStreaming}
+              disabled={isLoading || (isStreaming ?? false)}
             />
           </>
         ) : (
